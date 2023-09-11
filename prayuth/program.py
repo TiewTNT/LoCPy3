@@ -22,7 +22,16 @@ import numpy as np
 
 img4 = Image.open('./problems/img4.png')
 img4_copy = Image.open('./prayuth.png')
-img4_copy = img4_copy.transpose(0).rotate(203, expand=True, fillcolor=(222, 109, 13, 255)).rotate(39, expand=True, fillcolor=(0, 128, 0, 255))
+enhancer = ImageEnhance.Contrast(img4_copy)
+img4_copy = enhancer.enhance(2)
+enhancer = ImageEnhance.Brightness(img4_copy)
+img4_copy = enhancer.enhance(0.5)
+enhancer = ImageEnhance.Contrast(img4_copy)
+img4_copy = enhancer.enhance(1.5)
+x = 325
+y = 217
+img4_copy = img4_copy.transpose(0).rotate(203, expand=True, fillcolor=(222, 109, 13, 255)).crop((0+x, 0+y, 350+x, 350+y)).rotate(39, expand=True, fillcolor=(0, 128, 0, 255)).resize((450, 450))
 img4_copy.show()
 img4.show()
+Image.fromarray((np.array(img4) - np.array(img4_copy)) ** 2).show()
 print(np.mean((np.array(img4) - np.array(img4_copy)) ** 2))
